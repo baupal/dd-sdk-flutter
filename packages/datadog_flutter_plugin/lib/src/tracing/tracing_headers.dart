@@ -145,7 +145,7 @@ class TracingId {
 
   TracingId.spanId() : value = _generateSpanId();
 
-  static const _maxInt = kIsWeb ? -1 >> 0 : 1 << 32;
+  static const _maxInt = kIsWeb ? (-1 >> 0) + 1 : 1 << 32;
 
   /// Generate a 128-bit Trace Id.
   ///
