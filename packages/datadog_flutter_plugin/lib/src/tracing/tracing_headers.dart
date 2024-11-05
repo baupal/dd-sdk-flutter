@@ -145,6 +145,8 @@ class TracingId {
 
   TracingId.spanId() : value = _generateSpanId();
 
+  static const _maxInt = kIsWeb ? -1 >> 0 : 1 << 32;
+
   /// Generate a 128-bit Trace Id.
   ///
   /// The trace is generated within the range:
@@ -152,8 +154,8 @@ class TracingId {
   static BigInt _generateTraceId() {
     final time = (DateTime.now().millisecondsSinceEpoch ~/ 1000);
 
-    final highBits = BigInt.from(_traceRandom.nextInt(1 << 32));
-    final lowBits = BigInt.from(_traceRandom.nextInt(1 << 32));
+    final highBits = BigInt.from(_traceRandom.nextInt(_maxInt));
+    final lowBits = BigInt.from(_traceRandom.nextInt(_maxInt));
 
     var traceId = BigInt.from(time) << 96;
     traceId += (highBits << 32);
@@ -168,7 +170,7 @@ class TracingId {
     // we assume it needs to be a positive signed 64-bit int, so only
     // use 63-bits.
     final highBits = _traceRandom.nextInt(1 << 31);
-    final lowBits = BigInt.from(_traceRandom.nextInt(1 << 32));
+    final lowBits = BigInt.from(_traceRandom.nextInt(_maxInt));
 
     var spanId = BigInt.from(highBits) << 32;
     spanId += lowBits;
